@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<center>
+    <h1 th:text="${error}"></h1>
+
+    <br/>
+
+
+        <form th:action="@{/}" th:object="${reservationForm}" method="post">
+            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+            <input  placeholder="Imię" type="text" th:field="*{name}">
+            <br/>
+            <p th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></p>
+            <input  placeholder="Nazwisko" type="text" th:field="*{lastname}">
+            <br/>
+            <p th:if="${#fields.hasErrors('adres')}" th:errors="*{adres}"></p>
+            <input placeholder="Adres" type="text" th:field="*{adres}">
+            <br />
+            <p th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></p>
+            <input placeholder="Data" type="text" th:field="*{date}">
+            <br />
+            <input type="submit" value="Zarezerwuj">
+        </form>
+
+        <a  th:if="${reservations.hasNext()}" th:href="@{'/' + ${reservations.getNumber()+1}}">Następna</a>
+        |
+        <a  th:if="${reservations.hasPrevious()}" th:href="@{'/' + ${reservations.getNumber()-1}}">Poprzednia</a>
+
+        <table>
+            <tr>
+                <th>Imię</th>
+                <th>Nazwisko</th>
+                <th>Adres</th>
+                <th>Data</th>
+            </tr>
+            <th:block th:each="reservation : ${reservations.getContent()}">
+                <tr>
+                    <th th:text="${reservation.name}"></th>
+                    <th th:text="${reservation.lastname}"></th>
+                    <th th:text="${reservation.adres}"></th>
+                    <th th:text="${reservation.date}"></th>
+                </tr>
+            </th:block>
+        </table>
+
+</center>
+</body>
+<style>
+    table, th, tr {
+        border: 1px solid black;
+        border-collapse: collapse;
+        font-size: larger;
+    }
+</style>
+</html>
